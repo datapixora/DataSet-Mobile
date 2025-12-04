@@ -38,7 +38,8 @@ The goal is that any new developer can open this file and immediately understand
 - Log in a user
 - Store the access token securely on the device
 
-**Status:** TODO
+**Status:** IN PROGRESS
+
 
 **API (from backend):**
 - `POST /auth/signup`
@@ -54,6 +55,15 @@ The goal is that any new developer can open this file and immediately understand
   - `POST /auth/login`
 - [ ] Store JWT/access token securely (e.g. `shared_preferences` or secure storage)
 - [ ] Document how to run the app (in this repo’s README)
+
+> **2025-12-04 – Mostafa (datapixora)**  
+> Started M1: added core API client and basic auth layer in Flutter.  
+> Created:
+> - `lib/core/config.dart`
+> - `lib/core/api_client.dart`
+> - `lib/features/auth/auth_service.dart`
+> - `lib/features/auth/login_screen.dart`
+
 
 **Files (proposed for Flutter):**
 - `lib/main.dart` (entry point)
