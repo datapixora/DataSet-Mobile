@@ -1,17 +1,17 @@
-// lib/features/auth/login_screen.dart
+// lib/features/auth/signup_screen.dart
 import 'package:flutter/material.dart';
 import 'auth_service.dart';
-import 'signup_screen.dart';
 import '../campaigns/campaign_list_placeholder.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
+  final fullName = TextEditingController();
   final email = TextEditingController();
   final pass = TextEditingController();
   bool loading = false;
@@ -19,15 +19,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final auth = AuthService();
 
-  Future<void> _login() async {
+  Future<void> _signup() async {
     setState(() {
       loading = true;
       error = null;
     });
 
-    final ok = await auth.login(
+    final ok = await auth.signup(
       email.text.trim(),
       pass.text.trim(),
+      fullName.text.trim(),
     );
 
     setState(() {
@@ -36,11 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (!ok) {
       setState(() {
-        error = 'Login failed';
+        error = 'Signup failed';
       });
       return;
     }
 
+    // بعد از signup، کاربر رو می‌بریم به صفحه‌ی کمپین‌ها (placeholder)
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
@@ -50,22 +52,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _goToSignup() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => const SignupScreen(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: const Text('Sign up')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            TextField(
+              controller: fullName,
+              decoration: const InputDecoration(labelText: 'Full name'),
+            ),
             TextField(
               controller: email,
               decoration: const InputDecoration(labelText: 'Email'),
@@ -83,14 +81,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: loading ? null : _login,
+              onPressed: loading ? null : _signup,
               child: loading
                   ? const CircularProgressIndicator()
-                  : const Text('Login'),
-            ),
-            TextButton(
-              onPressed: _goToSignup,
-              child: const Text("Don't have an account? Sign up"),
+                  : const Text('Create account'),
             ),
           ],
         ),

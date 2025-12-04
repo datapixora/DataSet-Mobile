@@ -64,6 +64,18 @@ The goal is that any new developer can open this file and immediately understand
 > - `lib/features/auth/auth_service.dart`
 > - `lib/features/auth/login_screen.dart`
 
+> **2025-12-04 – Mostafa (datapixora)**  
+> Configured Flutter dependencies and fixed pub access (using flutter-io.cn mirror).  
+> `pubspec.yaml` now includes `http` and `shared_preferences`, and `LoginScreen` is wired as the app home in `main.dart`.
+
+> **2025-12-04 – Mostafa (datapixora)**  
+> Continued M1: added basic signup flow and navigation to a placeholder campaign list screen.  
+> Created:
+> - `lib/features/auth/signup_screen.dart`
+> - `lib/features/campaigns/campaign_list_placeholder.dart`
+> Updated:
+> - `lib/features/auth/login_screen.dart` to navigate on success and link to signup.
+
 
 **Files (proposed for Flutter):**
 - `lib/main.dart` (entry point)
