@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'models/campaign.dart';
 import 'services/campaign_service.dart';
+import '../uploads/screens/photo_upload_screen.dart';
 
 class CampaignDetailScreen extends StatefulWidget {
   final String campaignId;
@@ -321,9 +322,15 @@ class _CampaignDetailScreenState extends State<CampaignDetailScreen> {
   }
 
   void _handleUpload() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Photo upload feature will be implemented in the next milestone'),
+    if (_campaign == null) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PhotoUploadScreen(
+          campaignId: _campaign!.id,
+          campaignTitle: _campaign!.title,
+        ),
       ),
     );
   }

@@ -140,40 +140,59 @@ At the end of this milestone:
 
 **Goal:** From a campaign detail screen, the user can select photos from camera or gallery and submit them to that campaign.
 
-**Status:** 🔜 NEXT
+**Status:** ✅ DONE
 
 **API (from backend):**
 - `POST /uploads/initiate` - Get presigned upload URL
 - Upload binary file directly to `uploadUrl` (Cloudflare R2/S3)
 - `POST /uploads/complete` - Finalize upload
+- `GET /uploads/me` - Get user uploads
+- `GET /uploads?campaignId=xxx` - Get campaign uploads
 
 **Tasks:**
 - [x] Campaign detail screen (completed in M2)
-- [ ] Add image picker dependencies (`image_picker` package)
-- [ ] Implement photo source selection (Camera vs Gallery)
-- [ ] Integrate camera functionality
-- [ ] Integrate gallery picker
-- [ ] Add image preview before upload
-- [ ] Implement multi-image selection
-- [ ] Create UploadService class
-- [ ] Integrate `/uploads/initiate`:
+- [x] Add image picker dependencies (`image_picker`, `geolocator`, `permission_handler`, etc.)
+- [x] Implement photo source selection (Camera vs Gallery)
+- [x] Integrate camera functionality
+- [x] Integrate gallery picker with multi-select
+- [x] Add image preview before upload
+- [x] Implement multi-image selection
+- [x] Create UploadService class
+- [x] Integrate `/uploads/initiate`:
   - Send `campaignId`, `fileName`, `mimeType`
   - Receive `uploadUrl` and `fileKey`
-- [ ] Upload image file to `uploadUrl` (S3-compatible)
-- [ ] Implement upload progress tracking
-- [ ] Call `/uploads/complete` with:
+- [x] Upload image file to `uploadUrl` (S3-compatible with PUT)
+- [x] Implement upload progress tracking
+- [x] Call `/uploads/complete` with:
   - `campaignId`
   - `fileKey`
   - `metadata` (GPS, tags, etc.)
-- [ ] Add location/GPS metadata extraction
-- [ ] Show success / error feedback to the user
-- [ ] Handle offline upload queue (optional)
+- [x] Add location/GPS metadata extraction
+- [x] Show success / error feedback to the user
+- [ ] Handle offline upload queue (deferred to future)
 
-**Files (proposed):**
-- `lib/features/uploads/services/upload_service.dart` - Upload API logic
-- `lib/features/uploads/screens/photo_upload_screen.dart` - Upload UI
-- `lib/features/uploads/models/upload.dart` - Upload data model
-- Update `lib/features/campaigns/campaign_detail_screen.dart` - Wire upload button
+**Files (implemented):**
+- `lib/features/uploads/models/upload.dart` - Upload and UploadInitiateResponse models
+- `lib/features/uploads/services/upload_service.dart` - Complete upload API logic
+- `lib/features/uploads/screens/photo_upload_screen.dart` - Full upload UI with preview
+- `lib/features/campaigns/campaign_detail_screen.dart` - Wired upload button
+- `pubspec.yaml` - Added dependencies
+- `M3_UPLOAD_IMPLEMENTATION.md` - Complete documentation
+
+> **2025-12-05 – Claude Code + Mostafa**
+> Completed M3: Implemented comprehensive photo upload system.
+> Features:
+> - Camera and gallery integration with multi-image selection
+> - Three-step upload flow (initiate → S3 upload → complete)
+> - Upload progress tracking with visual feedback
+> - GPS metadata extraction (latitude, longitude, accuracy)
+> - Image preview grid with add/remove functionality
+> - Permission handling for camera and location
+> - Success/error feedback with user-friendly messages
+> - Direct S3/R2 upload using presigned URLs
+> - Batch upload support for multiple images
+>
+> Users can now capture photos or select from gallery and upload them to campaigns with full progress tracking and metadata.
 
 ---
 
