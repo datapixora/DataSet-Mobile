@@ -12,22 +12,23 @@ The goal is that any new developer can open this file and immediately understand
 
 ## M0 – Mobile Repo Setup
 
-**Status:** IN PROGRESS
+**Status:** ✅ DONE
 
 **Repository:** https://github.com/datapixora/DataSet-Mobile
 
 **Tasks:**
 - [x] Create a dedicated repository for the mobile app (`DataSet-Mobile`)
-- [ ] Decide on main tech stack:
-  - Option A: Flutter
-  - Option B: React Native
-- [ ] Add this file: `docs/mobile-app-roadmap.md` with initial plan
+- [x] Decide on main tech stack: **Flutter** (chosen)
+- [x] Add this file: `docs/mobile-app-roadmap.md` with initial plan
 - [ ] Link this repo from the main backend repo README (optional but recommended)
 
-> Notes:  
-> This repo is dedicated to the **contributor-facing mobile app** (Android/iOS).  
-> Backend lives in a separate repository (`DataSet`).  
-> This file must be updated at the end of each work session so the next developer knows exactly what changed and what’s next.
+> Notes:
+> This repo is dedicated to the **contributor-facing mobile app** (Android/iOS).
+> Backend lives in a separate repository (`DataSet`).
+> This file must be updated at the end of each work session so the next developer knows exactly what changed and what's next.
+
+> **2025-12-04 – Mostafa (datapixora)**
+> Created repository and selected Flutter as the tech stack. Multi-platform support configured for Android, iOS, Web, Windows, macOS, and Linux.
 
 ---
 
@@ -38,7 +39,7 @@ The goal is that any new developer can open this file and immediately understand
 - Log in a user
 - Store the access token securely on the device
 
-**Status:** IN PROGRESS
+**Status:** ✅ DONE
 
 
 **API (from backend):**
@@ -46,15 +47,15 @@ The goal is that any new developer can open this file and immediately understand
 - `POST /auth/login`
 
 **Tasks:**
-- [ ] Initialize the mobile project (e.g. Flutter in `/mobile/` folder or root)
-- [ ] Implement basic screens:
+- [x] Initialize the mobile project (e.g. Flutter in `/mobile/` folder or root)
+- [x] Implement basic screens:
   - Login screen
   - Signup screen
-- [ ] Call backend endpoints:
+- [x] Call backend endpoints:
   - `POST /auth/signup`
   - `POST /auth/login`
-- [ ] Store JWT/access token securely (e.g. `shared_preferences` or secure storage)
-- [ ] Document how to run the app (in this repo’s README)
+- [x] Store JWT/access token securely (e.g. `shared_preferences` or secure storage)
+- [x] Document how to run the app (in this repo's README)
 
 > **2025-12-04 – Mostafa (datapixora)**  
 > Started M1: added core API client and basic auth layer in Flutter.  
@@ -77,64 +78,102 @@ The goal is that any new developer can open this file and immediately understand
 > - `lib/features/auth/login_screen.dart` to navigate on success and link to signup.
 
 
-**Files (proposed for Flutter):**
+**Files (implemented):**
 - `lib/main.dart` (entry point)
-- `lib/api_client.dart` (HTTP + auth token helper)
-- `lib/services/auth_service.dart` (signup/login logic)
+- `lib/core/api_client.dart` (HTTP + auth token helper)
+- `lib/core/config.dart` (API configuration)
+- `lib/features/auth/auth_service.dart` (signup/login logic)
+- `lib/features/auth/login_screen.dart` (login UI)
+- `lib/features/auth/signup_screen.dart` (signup UI)
 
 At the end of this milestone:
-- [ ] Update this file (M1 → IN PROGRESS / DONE)
-- [ ] Add a short changelog entry (who did what & when)
+- [x] Update this file (M1 → DONE)
+- [x] Add a short changelog entry (who did what & when)
 
 ---
 
-## M2 – Campaign List Screen
+## M2 – Campaign List & Detail Screens
 
-**Goal:** After login, the user should see a list of active campaigns.
+**Goal:** After login, the user should see a list of active campaigns and view detailed information about each campaign.
 
-**Status:** TODO
+**Status:** ✅ DONE
 
 **API (from backend):**
-- `GET /campaigns`
+- `GET /campaigns` - Fetch all campaigns
+- `GET /campaigns/:id` - Fetch specific campaign details
 
 **Tasks:**
-- [ ] Fetch campaigns from backend
-- [ ] Display them in a list (title, short description, payout)
-- [ ] Handle loading / error / empty state
-- [ ] Navigate from Auth → CampaignList after successful login
+- [x] Fetch campaigns from backend
+- [x] Display them in a list (title, short description, payout)
+- [x] Handle loading / error / empty state
+- [x] Navigate from Auth → CampaignList after successful login
+- [x] Implement search functionality
+- [x] Implement filter by status (All/Active/Expired)
+- [x] Add pull-to-refresh
+- [x] Create campaign detail screen
+- [x] Display comprehensive campaign information
+- [x] Show progress tracking (uploaded/required photos)
+- [x] Add upload button placeholder for M3
 
-**Files (proposed):**
-- `lib/services/campaign_service.dart`
-- `lib/screens/campaign_list_screen.dart`
+**Files (implemented):**
+- `lib/features/campaigns/models/campaign.dart` - Campaign data model
+- `lib/features/campaigns/services/campaign_service.dart` - API service
+- `lib/features/campaigns/campaign_list_screen.dart` - Campaign list UI
+- `lib/features/campaigns/campaign_detail_screen.dart` - Campaign detail UI
+- `IMPLEMENTATION.md` - Complete implementation documentation
+
+> **2025-12-05 – Claude Code + Mostafa**
+> Completed M2: Implemented comprehensive campaign browsing system.
+> Features:
+> - Campaign model with JSON serialization and helper properties
+> - Campaign service for API integration
+> - Campaign list screen with search, filter (All/Active/Expired), and pull-to-refresh
+> - Campaign detail screen with progress tracking and upload button placeholder
+> - Updated auth screens to navigate to new campaign list
+> - Added complete implementation documentation
+>
+> The placeholder screen can now be removed as it has been replaced with full functionality.
 
 ---
 
-## M3 – Upload Flow (Initiate → Upload → Complete)
+## M3 – Photo Upload Flow (Initiate → Upload → Complete)
 
-**Goal:** From a campaign detail screen, the user can select a photo and submit it to that campaign.
+**Goal:** From a campaign detail screen, the user can select photos from camera or gallery and submit them to that campaign.
 
-**Status:** TODO
+**Status:** 🔜 NEXT
 
 **API (from backend):**
-- `POST /uploads/initiate`
+- `POST /uploads/initiate` - Get presigned upload URL
 - Upload binary file directly to `uploadUrl` (Cloudflare R2/S3)
-- `POST /uploads/complete`
+- `POST /uploads/complete` - Finalize upload
 
 **Tasks:**
-- [ ] Implement campaign detail screen
+- [x] Campaign detail screen (completed in M2)
+- [ ] Add image picker dependencies (`image_picker` package)
+- [ ] Implement photo source selection (Camera vs Gallery)
+- [ ] Integrate camera functionality
+- [ ] Integrate gallery picker
+- [ ] Add image preview before upload
+- [ ] Implement multi-image selection
+- [ ] Create UploadService class
 - [ ] Integrate `/uploads/initiate`:
   - Send `campaignId`, `fileName`, `mimeType`
   - Receive `uploadUrl` and `fileKey`
-- [ ] Upload image file to `uploadUrl`
+- [ ] Upload image file to `uploadUrl` (S3-compatible)
+- [ ] Implement upload progress tracking
 - [ ] Call `/uploads/complete` with:
   - `campaignId`
   - `fileKey`
-  - `metadata` (GPS, tags, etc. – to be defined)
+  - `metadata` (GPS, tags, etc.)
+- [ ] Add location/GPS metadata extraction
 - [ ] Show success / error feedback to the user
+- [ ] Handle offline upload queue (optional)
 
 **Files (proposed):**
-- `lib/services/upload_service.dart`
-- `lib/screens/campaign_detail_screen.dart`
+- `lib/features/uploads/services/upload_service.dart` - Upload API logic
+- `lib/features/uploads/screens/photo_upload_screen.dart` - Upload UI
+- `lib/features/uploads/models/upload.dart` - Upload data model
+- Update `lib/features/campaigns/campaign_detail_screen.dart` - Wire upload button
 
 ---
 
