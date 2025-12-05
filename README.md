@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+**System Overview**: [docs/system-overview.md](./docs/system-overview.md)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
