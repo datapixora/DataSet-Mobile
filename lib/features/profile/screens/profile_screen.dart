@@ -3,8 +3,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
 import '../services/user_service.dart';
 import 'earnings_screen.dart';
+import 'settings_screen.dart';
 import '../../uploads/screens/upload_history_screen.dart';
 import '../../auth/login_screen.dart';
+import '../../gamification/models/gamification.dart';
+import '../../gamification/services/gamification_service.dart';
+import '../../gamification/screens/achievements_screen.dart';
+import '../../gamification/screens/leaderboard_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,7 +20,10 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final UserService _userService = UserService();
+  final GamificationService _gamificationService = GamificationService();
   User? _user;
+  UserLevel? _userLevel;
+  Streak? _streak;
   bool _isLoading = true;
   String? _error;
 
@@ -33,8 +41,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     try {
       final user = await _userService.getCurrentUser();
+
+      // Try to load gamification data, but don't fail if unavailable
+      UserLevel? level;
+      Streak? streak;
+
+      try {
+        level = await _gamificationService.getUserLevel();
+        streak = await _gamificationService.getStreak();
+      } catch (e) {
+        // Gamification features may not be available yet
+      }
+
       setState(() {
         _user = user;
+        _userLevel = level;
+        _streak = streak;
         _isLoading = false;
       });
     } catch (e) {
@@ -174,6 +196,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
               'Member since ${_formatDate(user.createdAt)}',
               style: TextStyle(fontSize: 12, color: Colors.grey[600]),
             ),
+            if (_userLevel != null) ...[
+              const SizedBox(height: 16),
+              const Divider(),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      const Text('Level', style: TextStyle(fontSize: 12)),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${_userLevel!.level}',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      Text(
+                        _userLevel!.title,
+                        style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                  if (_streak != null)
+                    Column(
+                      children: [
+                        const Text('Streak', style: TextStyle(fontSize: 12)),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Icon(
+                              _streak!.isActive ? Icons.local_fire_department : Icons.local_fire_department_outlined,
+                              color: _streak!.isActive ? Colors.orange : Colors.grey,
+                              size: 24,
+                            ),
+                            Text(
+                              '${_streak!.currentStreak}',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: _streak!.isActive ? Colors.orange : Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'days',
+                          style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${_userLevel!.currentXP} / ${_userLevel!.xpForNextLevel} XP',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      Text(
+                        'Next: Lvl ${_userLevel!.level + 1}',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  LinearProgressIndicator(
+                    value: _userLevel!.progress,
+                    minHeight: 8,
+                    backgroundColor: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.blue,
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),
@@ -262,6 +366,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
         ),
         _buildMenuItem(
+          icon: Icons.emoji_events,
+          title: 'Achievements',
+          subtitle: 'View your achievements and badges',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AchievementsScreen()),
+            );
+          },
+        ),
+        _buildMenuItem(
+          icon: Icons.leaderboard,
+          title: 'Leaderboard',
+          subtitle: 'See how you rank against others',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
+            );
+          },
+        ),
+        _buildMenuItem(
           icon: Icons.bar_chart,
           title: 'Statistics',
           subtitle: '${user.approvalRate.toStringAsFixed(1)}% approval rate',
@@ -274,8 +400,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: 'Settings',
           subtitle: 'Manage your account settings',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Settings coming soon')),
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
             );
           },
         ),

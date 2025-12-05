@@ -266,6 +266,83 @@ At the end of this milestone:
 
 ---
 
+## M5 – Gamification & Polish
+
+**Goal:** Add gamification features (levels, achievements, leaderboards), settings management, and polish the app.
+
+**Status:** ✅ DONE
+
+**API (from backend):**
+- `GET /gamification/level` - Get user level and XP
+- `GET /gamification/achievements` - Get all achievements
+- `GET /gamification/badges` - Get user's badges
+- `GET /gamification/streak` - Get streak information
+- `GET /gamification/leaderboard?period=all&limit=100` - Get leaderboard
+- `GET /gamification/rank` - Get user's rank
+
+**Tasks:**
+- [x] Create gamification models (UserLevel, Achievement, Badge, Streak, LeaderboardEntry)
+- [x] Create GamificationService for all gamification APIs
+- [x] Implement Settings Screen with:
+  - Profile editing (name, email)
+  - Notification preferences
+  - Location/GPS toggle
+  - Image quality selection
+  - App version/build info
+  - Danger zone (delete account placeholder)
+- [x] Implement Achievements Screen with:
+  - Summary card (unlocked count, total XP, badges)
+  - Badges section with rarity colors
+  - Achievements list with filter
+  - Progress tracking for locked achievements
+  - Unlock dates for completed achievements
+- [x] Implement Leaderboard Screen with:
+  - User rank card
+  - Top 3 podium visualization
+  - Full leaderboard list
+  - Period filtering (All/Monthly/Weekly)
+- [x] Update Profile Screen with:
+  - Level and XP progress bar
+  - Streak display with fire icon
+  - Navigation to Achievements
+  - Navigation to Leaderboard
+  - Functional Settings navigation
+- [x] Add visual polish:
+  - Consistent color coding
+  - Progress indicators
+  - Empty states
+  - Pull-to-refresh everywhere
+  - Error handling
+
+**Files (implemented):**
+- `lib/features/gamification/models/gamification.dart` - All gamification models
+- `lib/features/gamification/services/gamification_service.dart` - Gamification API
+- `lib/features/gamification/screens/achievements_screen.dart` - Achievements UI
+- `lib/features/gamification/screens/leaderboard_screen.dart` - Leaderboard UI
+- `lib/features/profile/screens/settings_screen.dart` - Settings management
+- `lib/features/profile/screens/profile_screen.dart` - Updated with gamification
+- `M5_GAMIFICATION_IMPLEMENTATION.md` - Complete documentation
+
+> **2025-12-05 – Claude Code + Mostafa**
+> Completed M5: Implemented comprehensive gamification system and settings.
+> Features:
+> - User levels (1-100+) with 8 rank titles (Beginner → Mythic)
+> - XP system with progress tracking
+> - Achievements with progress bars and unlock tracking
+> - Badges with rarity system (common/rare/epic/legendary)
+> - Daily streak tracking with fire icon indicator
+> - Leaderboard with top 3 podium and period filtering
+> - Settings screen with profile editing, preferences, and toggles
+> - Profile editing for name and email
+> - Notification, location, and image quality preferences
+> - Enhanced profile screen with level, XP bar, and streak display
+> - Consistent color coding across all screens
+> - Pull-to-refresh and error handling throughout
+>
+> Users now have a complete gamification experience with levels, achievements, badges, streaks, and competitive leaderboards, plus full control over app settings.
+
+---
+
 ## Update Rules
 
 When you complete a step:
