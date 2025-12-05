@@ -1,7 +1,7 @@
 // lib/features/auth/signup_screen.dart
 import 'package:flutter/material.dart';
 import 'auth_service.dart';
-import '../campaigns/campaign_list_placeholder.dart';
+import '../campaigns/campaign_list_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -42,11 +42,10 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
-    // بعد از signup، کاربر رو می‌بریم به صفحه‌ی کمپین‌ها (placeholder)
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (_) => const CampaignListPlaceholderScreen(),
+        builder: (_) => const CampaignListScreen(),
       ),
       (route) => false,
     );

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'auth_service.dart';
 import 'signup_screen.dart';
-import '../campaigns/campaign_list_placeholder.dart';
+import '../campaigns/campaign_list_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (_) => const CampaignListPlaceholderScreen(),
+        builder: (_) => const CampaignListScreen(),
       ),
       (route) => false,
     );
