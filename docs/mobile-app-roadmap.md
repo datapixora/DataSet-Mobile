@@ -196,21 +196,73 @@ At the end of this milestone:
 
 ---
 
-## M4 – Earnings & Gamification (Future)
+## M4 – User Profile & Earnings
 
-**Goal:** Show the user how much they have earned and make the experience feel like a game.
+**Goal:** Show users their profile, earnings, transaction history, and upload statistics.
 
-**Status:** FUTURE
+**Status:** ✅ DONE
 
-**Possible APIs (from backend):**
-- `GET /users/earnings`
-- `GET /users/transactions`
+**API (from backend):**
+- `GET /users/me` - Get current user profile
+- `POST /users/me` - Update user profile
+- `GET /users/earnings` - Get earnings statistics
+- `GET /users/transactions` - Get transaction history
+- `POST /users/withdraw` - Request withdrawal (placeholder)
+- `GET /uploads/me` - Get user uploads
 
-**Ideas:**
-- [ ] Total confirmed earnings
-- [ ] Pending earnings per campaign
-- [ ] Recent accepted/rejected submissions
-- [ ] XP / levels / streaks / progress bar
+**Tasks:**
+- [x] Create User, Transaction, and EarningsStats models
+- [x] Create UserService for profile and earnings API
+- [x] Implement Profile Screen with:
+  - User information display
+  - Earnings summary cards
+  - Upload statistics
+  - Navigation menu to earnings/history
+  - Statistics dialog
+  - Logout functionality
+- [x] Implement Earnings Screen with:
+  - Comprehensive earnings breakdown
+  - Upload statistics with approval rate
+  - Transaction history list
+  - Withdrawal dialog (placeholder)
+- [x] Implement Upload History Screen with:
+  - All uploads list with status
+  - Filter by status (All/Pending/Approved/Rejected)
+  - Summary statistics bar
+  - Rejection reason display
+- [x] Add bottom navigation bar (Campaigns/Profile tabs)
+- [x] Update auth flow to use HomeScreen
+- [ ] Gamification features (deferred to M5)
+  - XP / levels / streaks / progress bar
+  - Achievements and badges
+  - Leaderboards
+
+**Files (implemented):**
+- `lib/features/profile/models/user.dart` - User, Transaction, EarningsStats models
+- `lib/features/profile/services/user_service.dart` - User and earnings API service
+- `lib/features/profile/screens/profile_screen.dart` - Main profile dashboard
+- `lib/features/profile/screens/earnings_screen.dart` - Earnings and transactions
+- `lib/features/uploads/screens/upload_history_screen.dart` - Upload history
+- `lib/features/home/home_screen.dart` - Home with bottom navigation
+- `lib/features/auth/login_screen.dart` - Updated navigation
+- `lib/features/auth/signup_screen.dart` - Updated navigation
+- `M4_PROFILE_EARNINGS_IMPLEMENTATION.md` - Complete documentation
+
+> **2025-12-05 – Claude Code + Mostafa**
+> Completed M4: Implemented comprehensive user profile and earnings tracking.
+> Features:
+> - User profile screen with info, stats, and navigation
+> - Earnings dashboard with total/pending/available breakdown
+> - Upload statistics with approval rate visualization
+> - Transaction history with status indicators
+> - Upload history screen with filtering and rejection reasons
+> - Bottom navigation bar for Campaigns and Profile
+> - Logout functionality with confirmation
+> - Pull-to-refresh on all screens
+> - Color-coded visual hierarchy (green/orange/red/blue)
+> - Empty states and error handling
+>
+> Users can now view their profile, track earnings, review transactions, and monitor upload status with detailed feedback.
 
 ---
 
