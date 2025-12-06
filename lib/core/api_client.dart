@@ -35,4 +35,10 @@ class ApiClient {
     final url = Uri.parse("${AppConfig.apiBaseUrl}$path");
     return await http.get(url, headers: _headers(auth: auth));
   }
+
+  Future<http.Response> patch(String path, Map body, {bool auth = false}) async {
+    final url = Uri.parse("${AppConfig.apiBaseUrl}$path");
+    return await http.patch(url,
+        headers: _headers(auth: auth), body: jsonEncode(body));
+  }
 }

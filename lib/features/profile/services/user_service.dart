@@ -7,7 +7,7 @@ class UserService {
 
   /// Get current user profile
   Future<User> getCurrentUser() async {
-    final res = await api.get("/users/me", auth: true);
+    final res = await api.get("/auth/me", auth: true);
 
     if (res.statusCode != 200) {
       throw Exception('Failed to fetch user profile');
@@ -38,7 +38,7 @@ class UserService {
     }
 
     final data = jsonDecode(res.body);
-    final List<dynamic> transactionsJson = data['data'] ?? [];
+    final List<dynamic> transactionsJson = data['data']?['transactions'] ?? [];
 
     return transactionsJson.map((json) => Transaction.fromJson(json)).toList();
   }
@@ -52,7 +52,7 @@ class UserService {
     if (fullName != null) body['fullName'] = fullName;
     if (email != null) body['email'] = email;
 
-    final res = await api.post("/users/me", body, auth: true);
+    final res = await api.patch("/users/profile", body, auth: true);
 
     if (res.statusCode != 200) {
       throw Exception('Failed to update profile');

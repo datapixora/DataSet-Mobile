@@ -24,21 +24,25 @@ class Campaign {
   });
 
   factory Campaign.fromJson(Map<String, dynamic> json) {
+    // Get tags as category (use first tag if available)
+    final tags = json['tags'] as List<dynamic>?;
+    final category = tags != null && tags.isNotEmpty ? tags[0].toString() : 'general';
+
     return Campaign(
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      category: json['category'] ?? '',
-      photosRequired: json['photosRequired'] ?? 0,
-      rewardPerPhoto: (json['rewardPerPhoto'] ?? 0).toDouble(),
-      status: json['status'] ?? 'active',
-      deadline: DateTime.parse(json['deadline']),
+      category: category,
+      photosRequired: json['targetQuantity'] ?? 0,
+      rewardPerPhoto: double.tryParse(json['basePayout']?.toString() ?? '0') ?? 0.0,
+      status: json['status'] ?? 'ACTIVE',
+      deadline: json['endsAt'] != null ? DateTime.parse(json['endsAt']) : DateTime.now().add(Duration(days: 365)),
       createdAt: DateTime.parse(json['createdAt']),
-      uploadCount: json['_count']?['uploads'] ?? 0,
+      uploadCount: json['totalCollected'] ?? 0,
     );
   }
 
-  bool get isActive => status == 'active' && DateTime.now().isBefore(deadline);
+  bool get isActive => status == 'ACTIVE' && DateTime.now().isBefore(deadline);
 
   int get remainingPhotos => photosRequired - uploadCount;
 

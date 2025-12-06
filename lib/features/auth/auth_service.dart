@@ -11,7 +11,13 @@ class AuthService {
       "fullName": fullname,
     });
 
-    return res.statusCode == 200 || res.statusCode == 201;
+    if (res.statusCode != 200 && res.statusCode != 201) return false;
+
+    final data = jsonDecode(res.body);
+    final token = data["data"]["accessToken"];
+    await api.saveToken(token);
+
+    return true;
   }
 
   Future<bool> login(String email, String password) async {
@@ -23,7 +29,7 @@ class AuthService {
     if (res.statusCode != 200) return false;
 
     final data = jsonDecode(res.body);
-    final token = data["data"]["accessToken"]; // اگر متفاوت بود بعداً اصلاح می‌کنیم
+    final token = data["data"]["accessToken"];
     await api.saveToken(token);
 
     return true;

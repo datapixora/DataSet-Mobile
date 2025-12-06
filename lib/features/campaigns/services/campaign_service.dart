@@ -6,14 +6,14 @@ class CampaignService {
   final api = ApiClient.instance;
 
   Future<List<Campaign>> getCampaigns() async {
-    final res = await api.get("/campaigns", auth: true);
+    final res = await api.get("/campaigns", auth: false);
 
     if (res.statusCode != 200) {
       throw Exception('Failed to load campaigns');
     }
 
     final data = jsonDecode(res.body);
-    final List<dynamic> campaignsJson = data['data'] ?? [];
+    final List<dynamic> campaignsJson = data['data']?['campaigns'] ?? [];
 
     return campaignsJson.map((json) => Campaign.fromJson(json)).toList();
   }

@@ -16,13 +16,16 @@ class UploadService {
   }) async {
     final fileName = path.basename(filePath);
     final mimeType = lookupMimeType(filePath) ?? 'image/jpeg';
+    final file = File(filePath);
+    final fileSize = await file.length();
 
     final res = await api.post(
       "/uploads/initiate",
       {
-        "campaignId": campaignId,
-        "fileName": fileName,
-        "mimeType": mimeType,
+        "campaign_id": campaignId,
+        "filename": fileName,
+        "file_size": fileSize,
+        "mime_type": mimeType,
       },
       auth: true,
     );
@@ -82,8 +85,8 @@ class UploadService {
     final res = await api.post(
       "/uploads/complete",
       {
-        "campaignId": campaignId,
-        "fileKey": fileKey,
+        "campaign_id": campaignId,
+        "file_key": fileKey,
         if (metadata != null) "metadata": metadata,
       },
       auth: true,
